@@ -1,0 +1,199 @@
+{
+  "source": 2,
+  "revision": 14,
+  "description": null,
+  "createdBy": {},
+  "createdOn": "",
+  "modifiedBy": {},
+  "modifiedOn": "",
+  "isDeleted": false,
+  "lastRelease": {},
+  "variables": {
+    "ParentDir": { "value": "$(AGENT.RELEASEDIRECTORY)" },
+    "version": { "value": "0.0.1" }
+  },
+  "variableGroups": [8511, 12876],
+  "environments": [
+    {
+      "id": 86,
+      "name": "DEV Deploy",
+      "rank": 1,
+      "owner": {},
+      "variables": {},
+      "variableGroups": [],
+      "preDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 282
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": null,
+          "releaseCreatorCanBeApprover": false,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0,
+          "executionOrder": 1
+        }
+      },
+      "deployStep": { "id": 283 },
+      "postDeployApprovals": {
+        "approvals": [
+          {
+            "rank": 1,
+            "isAutomated": true,
+            "isNotificationOn": false,
+            "id": 284
+          }
+        ],
+        "approvalOptions": {
+          "requiredApproverCount": null,
+          "releaseCreatorCanBeApprover": false,
+          "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+          "enforceIdentityRevalidation": false,
+          "timeoutInMinutes": 0,
+          "executionOrder": 2
+        }
+      },
+      "deployPhases": [
+        {
+          "deploymentInput": {
+            "parallelExecution": { "parallelExecutionType": 0 },
+            "agentSpecification": null,
+            "skipArtifactsDownload": false,
+            "artifactsDownloadInput": { "downloadInputs": [] },
+            "queueId": 3347,
+            "demands": [],
+            "enableAccessToken": true,
+            "timeoutInMinutes": 0,
+            "jobCancelTimeoutInMinutes": 1,
+            "condition": "succeeded()",
+            "overrideInputs": {}
+          },
+          "rank": 1,
+          "phaseType": 1,
+          "name": "Agent job",
+          "refName": null,
+          "workflowTasks": [
+            {
+              "environment": {},
+              "taskId": "7d2fe32f-cd7f-46a5-8420-3ede9a3391a3",
+              "version": "1.*",
+              "name": "Task group: Read Version findcare",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": true,
+              "continueOnError": true,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "metaTask",
+              "overrideInputs": {},
+              "condition": "succeededOrFailed()",
+              "inputs": {
+                "chartPath": "$(System.DefaultWorkingDirectory)/_findcare/helm/findcare/Chart.yaml"
+              }
+            },
+            {
+              "environment": {},
+              "taskId": "f56ce6e7-9a26-4f17-9cd0-418dd1394dcd",
+              "version": "2.*",
+              "name": "Task group: Push findcare Image to NPE East",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": true,
+              "continueOnError": true,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "metaTask",
+              "overrideInputs": {},
+              "condition": "succeededOrFailed()",
+              "inputs": {
+                "artifact-container-registry": "",
+                "artifact-password": "",
+                "artifact-user": "",
+                "chartPath": "$(System.DefaultWorkingDirectory)/_findcare/helm/findcare/",
+                "image": "findcare",
+                "sp-dhp-aps-devs-npe-appid": "$(sp-dhp-aps-devs-npe-appid)",
+                "sp-dhp-aps-devs-npe-secret": "$(sp-dhp-aps-devs-npe-secret)",
+                "tenant-id": "$(tenant-id)",
+                "version": "$(version)"
+              }
+            },
+            {
+              "environment": {},
+              "taskId": "aef182b6-54e9-4ae3-8684-897f43721fdc",
+              "version": "1.*",
+              "name": "Task group: Deploy findcare Image to NPE East",
+              "refName": "",
+              "enabled": true,
+              "alwaysRun": true,
+              "continueOnError": true,
+              "timeoutInMinutes": 0,
+              "retryCountOnTaskFailure": 0,
+              "definitionType": "metaTask",
+              "overrideInputs": {},
+              "condition": "succeededOrFailed()",
+              "inputs": {
+                "image": "findcare",
+                "namespace": "exp-dev",
+                "serviceConnection": "70c84a46-db5a-41a8-a8e4-31daaceb7754",
+                "valueFile": "$(System.DefaultWorkingDirectory)/_findcare/helm/findcare/values_dev.yaml",
+                "version": "$(version)"
+              }
+            }
+          ]
+        }
+      ],
+      "environmentOptions": {
+        "emailNotificationType": "OnlyOnFailure",
+        "emailRecipients": "release.environment.owner;release.creator",
+        "skipArtifactsDownload": false,
+        "timeoutInMinutes": 0,
+        "enableAccessToken": false,
+        "publishDeploymentStatus": true,
+        "badgeEnabled": false,
+        "autoLinkWorkItems": false,
+        "pullRequestDeploymentEnabled": false
+      },
+      "demands": [],
+      "conditions": [
+        { "name": "ReleaseStarted", "conditionType": 1, "value": "" }
+      ],
+      "executionPolicy": { "concurrencyCount": 1, "queueDepthCount": 0 },
+      "schedules": [],
+      "currentRelease": {},
+      "retentionPolicy": {
+        "daysToKeep": 30,
+        "releasesToKeep": 3,
+        "retainBuild": true
+      },
+      "processParameters": {},
+      "properties": {
+        "BoardsEnvironmentType": {
+          "$type": "System.String",
+          "$value": "unmapped"
+        },
+        "LinkBoardsWorkItems": { "$type": "System.String", "$value": "False" }
+      },
+      "preDeploymentGates": { "id": 0, "gatesOptions": null, "gates": [] },
+      "postDeploymentGates": { "id": 0, "gatesOptions": null, "gates": [] },
+      "environmentTriggers": [],
+      "badgeUrl": ""
+    }
+  ],
+  "artifacts": [],
+  "triggers": [],
+  "releaseNameFormat": "Release-$(rev:r)",
+  "tags": [],
+  "properties": {
+    "DefinitionCreationSource": {
+      "$type": "System.String",
+      "$value": "ReleaseNew"
+    },
+    "IntegrateJiraWorkItems": { "$type": "System.String", "$value": "false" },
+    "IntegrateBoardsWorkItems": { "$type": "System.String", "$value": "False" }
+  }
+}
